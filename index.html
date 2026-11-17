@@ -7,7 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
-:root{--milk:#fff8ee;--foam:#fdeedd;--blush:#f4b9b2;--blush-d:#e8908a;--matcha:#7fa37a;--matcha-d:#5c8057;--butter:#f6d98b;--espresso:#3e2a22;--latte:#7a5a4a;--wood:#9a6b45;--chalk:#f6f1e6;--board:#34332f;}
+:root{--milk:#fff8ee;--foam:#fdeedd;--blush:#f4b9b2;--blush-d:#e8908a;--matcha:#7fa37a;--matcha-d:#5c8057;--butter:#f6d98b;--espresso:#3e2a22;--latte:#7a5a4a;--wood:#9a6b45;--chalk:#f6f1e6;--board:#34332f;--rg:linear-gradient(110deg,#f4b9b2,#f6d98b,#7fa37a,#f4b9b2);}
 html,body{width:100%;background:var(--foam);}
 .wrap{font-family:'Nunito',sans-serif;color:var(--espresso);min-height:100vh;position:relative;overflow:hidden;background:var(--foam) radial-gradient(circle at 1px 1px,rgba(154,107,69,.12) 1px,transparent 1.5px) 0 0/18px 18px;}
 .paws{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
@@ -21,6 +21,7 @@ html,body{width:100%;background:var(--foam);}
 @keyframes wigR{0%,100%{transform:rotate(14deg);}50%{transform:rotate(28deg);}}
 @keyframes walk{0%{left:-15%;opacity:0;}10%,90%{opacity:.9;}100%{left:105%;opacity:0;}}
 @keyframes puff{0%{transform:translateY(0) scale(.6);opacity:0;}30%{opacity:.5;}100%{transform:translateY(-26px) scale(1.4);opacity:0;}}
+@keyframes flow{to{background-position:100% 0;}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;}}
 
 .awning{position:relative;z-index:2;height:44px;background:repeating-linear-gradient(90deg,var(--matcha) 0 28px,var(--milk) 28px 56px);
@@ -43,7 +44,7 @@ html,body{width:100%;background:var(--foam);}
 .owner-name:hover{color:var(--matcha-d);text-decoration:underline;text-underline-offset:3px;}
 .owner-status{margin-top:4px;font-size:12px;font-weight:800;color:var(--milk);background:var(--matcha);padding:3px 12px;border-radius:99px;}
 
-/* GEM DIVIDER: checkerboard lines with a traveling light and a spinning gem */
+/* GEM DIVIDER */
 .sep{position:relative;display:flex;align-items:center;gap:6px;margin:24px 0;}
 .sep-l,.sep-r{flex:1;height:10px;position:relative;overflow:hidden;border:1px solid var(--espresso);border-radius:3px;opacity:.85;background:repeating-conic-gradient(var(--espresso) 0 25%,var(--milk) 0 50%) 0 0/10px 10px;}
 .sep-l::after,.sep-r::after{content:'';position:absolute;top:0;bottom:0;width:35%;background:linear-gradient(90deg,transparent,rgba(246,217,139,.95),transparent);}
@@ -57,24 +58,9 @@ html,body{width:100%;background:var(--foam);}
 .sec-hd{margin:6px 0 12px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;border-left:7px solid var(--matcha);padding-left:10px;border-radius:3px;}
 .sec-hd-title{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;}
 .sec-hd-sub{font-size:13px;font-weight:600;color:var(--latte);}
-
-/* MUSIC */
-.music-panel{position:relative;background:var(--milk);border:3px solid var(--espresso);border-radius:18px;padding:16px;box-shadow:0 5px 0 var(--espresso);text-align:center;}
-.steam{position:absolute;top:8px;left:50%;width:40px;margin-left:-20px;display:flex;justify-content:space-between;pointer-events:none;}
-.steam i{width:7px;height:7px;border-radius:50%;background:var(--latte);opacity:0;}
-.playing .steam i{animation:puff 2s ease-out infinite;}
-.playing .steam i:nth-child(2){animation-delay:.6s;}
-.playing .steam i:nth-child(3){animation-delay:1.2s;}
-.music-btn{width:54px;height:54px;border:3px solid var(--espresso);border-radius:50%;background:var(--butter);color:var(--espresso);font-size:20px;cursor:pointer;display:block;margin:10px auto 14px;box-shadow:0 3px 0 var(--espresso);transition:transform .1s,box-shadow .1s;}
-.music-btn:active,.invite-btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--espresso);}
 button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--matcha-d);outline-offset:2px;}
-.music-progress-wrap{height:10px;background:var(--foam);border:2px solid var(--espresso);border-radius:99px;overflow:hidden;cursor:pointer;}
-.music-progress{height:100%;width:0%;background:var(--matcha);transition:width .1s linear;}
-.music-time{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;font-weight:800;color:var(--latte);}
-.vol{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:14px;}
-.vol input{flex:1;accent-color:var(--matcha-d);min-width:0;}
 
-/* SHARED SLAB CARDS (members, dropdowns) */
+/* SLAB CARDS + DROPDOWNS */
 .members-list{display:flex;flex-direction:column;gap:14px;padding-top:6px;}
 .m-card,.acc-hd{position:relative;display:flex;align-items:center;gap:10px;width:100%;padding:9px 12px 9px 20px;background:var(--milk);border:2px solid var(--espresso);border-radius:14px;text-decoration:none;color:inherit;font:inherit;text-align:left;cursor:pointer;box-shadow:inset 8px 0 0 var(--matcha);transition:transform .15s,background .15s,box-shadow .2s;}
 .m-card:hover,.acc-hd:hover{background:var(--blush);transform:translateY(-2px);box-shadow:inset 15px 0 0 var(--matcha-d);}
@@ -88,8 +74,6 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .m-card:hover .m-meta{color:var(--espresso);}
 .m-time{margin-left:auto;font-size:11px;font-weight:800;color:var(--latte);white-space:nowrap;}
 .note{font-size:13px;font-weight:700;color:var(--latte);padding:8px;}
-
-/* DROPDOWNS */
 .accs{display:flex;flex-direction:column;gap:12px;}
 .acc-t{font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;flex:1;}
 .acc-ch{transition:transform .25s;}
@@ -99,9 +83,50 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .acc-in{overflow:hidden;min-height:0;text-align:center;}
 .acc-card{margin-top:8px;padding:12px;background:var(--milk);border:2px dashed var(--espresso);border-radius:14px;}
 .acc-card img{max-width:100%;width:100%;border-radius:10px;border:2px solid var(--espresso);display:block;margin-bottom:8px;}
-.acc-card .ttl{font-family:'Fredoka',sans-serif;font-weight:500;margin-bottom:8px;}
+.ttl{font-family:'Fredoka',sans-serif;font-weight:500;margin-bottom:8px;}
 .mini{display:inline-block;padding:6px 14px;border:2px solid var(--espresso);border-radius:99px;background:var(--matcha);color:var(--milk);font:700 13px 'Nunito',sans-serif;text-decoration:none;cursor:pointer;margin:2px;}
 .mini:hover{background:var(--matcha-d);}
+
+/* RADIO BAR (animated gradient) */
+.radio>.acc-hd{background:var(--rg);background-size:300% 100%;animation:flow 9s linear infinite;}
+.radio>.acc-hd:hover{background:var(--rg);background-size:300% 100%;box-shadow:inset 15px 0 0 var(--matcha-d),0 0 20px 4px rgba(246,217,139,.9);}
+.mp{position:relative;background:var(--foam);border:2px solid var(--espresso);border-radius:14px;padding:12px;}
+.steam{position:absolute;top:6px;left:50%;width:40px;margin-left:-20px;display:flex;justify-content:space-between;pointer-events:none;}
+.steam i{width:7px;height:7px;border-radius:50%;background:var(--latte);opacity:0;}
+.playing .steam i{animation:puff 2s ease-out infinite;}
+.playing .steam i:nth-child(2){animation-delay:.6s;}
+.playing .steam i:nth-child(3){animation-delay:1.2s;}
+.music-btn{width:50px;height:50px;border:3px solid var(--espresso);border-radius:50%;background:var(--butter);color:var(--espresso);font-size:18px;cursor:pointer;display:block;margin:8px auto 12px;box-shadow:0 3px 0 var(--espresso);transition:transform .1s,box-shadow .1s;}
+.music-btn:active,.invite-btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--espresso);}
+.music-progress-wrap{height:10px;background:var(--milk);border:2px solid var(--espresso);border-radius:99px;overflow:hidden;cursor:pointer;}
+.music-progress{height:100%;width:0%;background:var(--matcha);transition:width .1s linear;}
+.music-time{display:flex;justify-content:space-between;margin-top:6px;font-size:12px;font-weight:800;color:var(--latte);}
+.vol{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:14px;}
+.vol input{flex:1;accent-color:var(--matcha-d);min-width:0;}
+.by{font-size:12px;font-weight:700;color:var(--latte);margin-bottom:8px;}
+.tv{aspect-ratio:16/9;width:100%;border:3px solid var(--espresso);border-radius:10px;overflow:hidden;background:#000;}
+.tv iframe{width:100%;height:100%;display:block;}
+.now{margin-top:8px;font-size:13px;font-weight:700;min-height:34px;}
+.now small{display:block;color:var(--latte);font-weight:600;}
+.ctl{display:flex;justify-content:center;gap:8px;margin-top:4px;}
+.tl{position:relative;max-height:200px;overflow-y:auto;text-align:left;margin-top:8px;border:2px solid var(--espresso);border-radius:10px;background:var(--milk);scrollbar-width:thin;}
+.tr{display:flex;gap:8px;width:100%;padding:6px 8px;border:0;border-bottom:1px dotted rgba(62,42,34,.25);background:none;font:600 13px 'Nunito',sans-serif;cursor:pointer;text-align:left;color:inherit;box-shadow:inset 4px 0 0 transparent;}
+.tr:hover{background:var(--blush);}
+.tr.on{background:var(--butter);box-shadow:inset 5px 0 0 var(--matcha-d);}
+.tn{width:22px;color:var(--latte);flex-shrink:0;}
+.tt{flex:1;}
+.tt small{display:block;color:var(--latte);font-weight:600;font-size:11px;}
+.tm{color:var(--latte);font-size:11px;flex-shrink:0;}
+
+/* PUZZLE BOARD */
+.bd{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1;border:2px solid var(--espresso);border-radius:8px;overflow:hidden;margin-bottom:8px;user-select:none;}
+.sq{display:flex;align-items:center;justify-content:center;font-size:min(8vw,32px);line-height:1;cursor:pointer;background:#f3e2c8;font-family:'Segoe UI Symbol','Noto Sans Symbols 2','DejaVu Sans',sans-serif;}
+.sq.d{background:#c79d74;}
+.sq.s{background:var(--butter);}
+.sq.t::after{content:'';width:28%;height:28%;border-radius:50%;background:rgba(62,42,34,.35);}
+.sq .w{color:#fff;text-shadow:0 0 2px #000,0 0 2px #000,0 0 3px #000;}
+.sq .b{color:#2a1a14;}
+.st{min-height:20px;font-weight:800;font-size:13px;margin-bottom:6px;}
 
 /* MENU BOARD */
 .board{background:var(--board);border:8px solid var(--wood);border-radius:12px;padding:14px;box-shadow:0 5px 0 rgba(62,42,34,.35),inset 0 0 24px rgba(0,0,0,.35);}
@@ -111,7 +136,6 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .l-btn:last-child{border-bottom:none;}
 .l-btn:hover{color:var(--butter);box-shadow:inset 10px 0 0 var(--butter);}
 .l-ico{width:24px;text-align:center;flex-shrink:0;}
-
 .invite{background:var(--blush);border:3px dashed var(--espresso);border-radius:18px;padding:18px;text-align:center;}
 .invite-title{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;margin-bottom:4px;}
 .invite-sub{font-size:13px;font-weight:700;margin-bottom:14px;}
@@ -139,14 +163,25 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 <div class="main">
   <div class="sep"><div class="sep-l"></div><div class="sep-g"><span class="gem"></span></div><div class="sep-r"></div><span class="walker">🐾 🐾 🐾</span></div>
 
-  <div class="sec-hd"><div class="sec-hd-title">Café radio</div><div class="sec-hd-sub">Now playing the club theme</div></div>
-  <div class="music-panel" id="musicPanel">
-    <div class="steam"><i></i><i></i><i></i></div>
-    <audio id="themeAudio" loop><source src="PokemonLeagueNight.mp3" type="audio/mpeg"></audio>
-    <button class="music-btn" id="playBtn" aria-label="Play or pause the club theme">▶</button>
-    <div class="music-progress-wrap" id="seek"><div class="music-progress" id="progressBar"></div></div>
-    <div class="music-time"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
-    <div class="vol"><span aria-hidden="true">🔈</span><input type="range" id="vol" min="0" max="1" step="0.05" value="0.6" aria-label="Volume"></div>
+  <div class="acc radio" id="radio">
+    <button class="acc-hd" aria-expanded="false"><span class="acc-t">📻 Café radio</span><span class="acc-ch">▾</span></button>
+    <div class="acc-bd"><div class="acc-in"><div class="acc-card">
+      <div class="mp" id="musicPanel">
+        <div class="steam"><i></i><i></i><i></i></div>
+        <div class="ttl">Club theme</div>
+        <audio id="themeAudio" preload="metadata"><source src="PokemonLeagueNight.mp3" type="audio/mpeg"></audio>
+        <button class="music-btn" id="playBtn" aria-label="Play or pause the club theme">▶</button>
+        <div class="music-progress-wrap" id="seek"><div class="music-progress" id="progressBar"></div></div>
+        <div class="music-time"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+        <div class="vol"><span aria-hidden="true">🔈</span><input type="range" id="vol" min="0" max="1" step="0.05" value="0.6" aria-label="Volume"></div>
+      </div>
+      <div class="ttl" style="margin:14px 0 2px;">Night café mix</div>
+      <div class="by">Playlist by <a href="https://www.youtube.com/channel/UCKdURsjh1xT1vInYBy82n6g" target="_blank" rel="noopener">Chill with Taiki</a></div>
+      <div class="tv"><div id="ytp"></div></div>
+      <div class="now" id="ytnow">Loading the playlist…</div>
+      <div class="ctl"><button class="mini" id="yprev" aria-label="Previous song">⏮</button><button class="mini" id="yplay" aria-label="Play or pause">▶</button><button class="mini" id="ynext" aria-label="Next song">⏭</button></div>
+      <div class="tl" id="ytlist"></div>
+    </div></div></div>
   </div>
 
   <div class="sep"><div class="sep-l"></div><div class="sep-g"><span class="gem"></span></div><div class="sep-r"></div></div>
@@ -193,7 +228,9 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 
 <script>
 const $=id=>document.getElementById(id);
+const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(k));localStorage.setItem(k,JSON.stringify(v));}catch(e){return null;}}
+const loadScript=u=>new Promise((res,rej)=>{const s=document.createElement('script');s.src=u;s.onload=res;s.onerror=rej;document.head.appendChild(s);});
 
 /* FLOATING PAWS */
 (function(){const c=$('paws');for(let i=0;i<9;i++){const el=document.createElement('div');el.className='paw';el.textContent='🐾';const d=14+Math.random()*10;el.style.cssText=`left:${Math.random()*100}%;--t:${d}s;--d:${-Math.random()*d}s;font-size:${14+Math.random()*10}px;`;c.appendChild(el);}})();
@@ -219,17 +256,156 @@ function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(
   window.addEventListener('DOMContentLoaded',go);
 })();
 
-/* DROPDOWNS (load content on first open) */
+/* CLUB THEME MP3 (starts at 0:02, loops back to 0:02) */
 (function(){
+  const a=$('themeAudio'),btn=$('playBtn'),panel=$('musicPanel'),vol=$('vol');
+  const START=2; /* seconds skipped at the start of the mp3; change this number to adjust */
+  const fmt=s=>Math.floor(s/60)+':'+Math.floor(s%60).toString().padStart(2,'0');
+  const v=store('tcgVol');if(typeof v==='number'){vol.value=v;}
+  a.volume=parseFloat(vol.value);
+  vol.addEventListener('input',()=>{a.volume=parseFloat(vol.value);store('tcgVol',a.volume);});
+  function toggle(){
+    if(a.paused){
+      if(a.currentTime<START)a.currentTime=START;
+      try{window.__yt&&window.__yt.pauseVideo();}catch(e){}
+      a.play().then(()=>{btn.textContent='❚❚';panel.classList.add('playing');}).catch(()=>{});
+    }else{a.pause();btn.textContent='▶';panel.classList.remove('playing');}
+  }
+  btn.addEventListener('click',toggle);
+  document.addEventListener('keydown',e=>{
+    if(e.code==='Space'&&!['BUTTON','A','INPUT'].includes(document.activeElement.tagName)){
+      e.preventDefault();
+      const y=window.__yt;
+      if(y&&y.getPlayerState&&y.getPlayerState()===1){y.pauseVideo();return;}
+      toggle();
+    }
+  });
+  a.addEventListener('loadedmetadata',()=>{$('duration').textContent=fmt(a.duration);if(a.currentTime<START)a.currentTime=START;});
+  a.addEventListener('ended',()=>{a.currentTime=START;a.play().catch(()=>{});});
+  a.addEventListener('timeupdate',()=>{if(a.duration&&a.currentTime>=a.duration-0.25)a.currentTime=START;$('progressBar').style.width=(a.currentTime/a.duration)*100+'%';$('currentTime').textContent=fmt(a.currentTime);});
+  $('seek').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();a.currentTime=((e.clientX-r.left)/r.width)*a.duration;});
+})();
+
+/* YOUTUBE PLAYLIST (one long video split into songs by timestamps) */
+(function(){
+  const VID='9FvvbVI5rYA';
+  /* One song per line: "time - Artist - Title | link". A description's tracklist pastes in as is. */
+  const LIST=`0:00 - The King Chameleon - sad dream | https://spoti.fi/38ZLPpd
+2:42 - Says Phoebe - Forgetful | https://spoti.fi/3bTKUbL
+5:05 - Banks, sftspkn - Blossoms | https://spoti.fi/3bOLxTA
+7:22 - t3. - lilly the little car | https://spoti.fi/30NBFmN
+10:38 - intro-vert - florentine | https://spoti.fi/3llbkpy
+12:38 - KsMusic3 - Lost in Reverie | https://spoti.fi/3vqEjx5
+15:01 - tyleradams - trees of green | https://spoti.fi/3vukEMA
+16:56 - Ayzic - contemplative | https://spoti.fi/3cE5trP
+18:35 - marlus & pynes - night fool | https://spoti.fi/2OTYzXd
+21:02 - su-zuum, tsunami sounds - itsukushimu | https://spoti.fi/3qPNF1J
+23:39 - ptr. - dawn | https://spoti.fi/3eP0gzM
+25:47 - trent ivor. - in a dream world | https://spoti.fi/3vpAic5
+28:06 - coldbrew, jfbm - a drop of water | https://spoti.fi/3qQtVLi
+30:35 - antonius b - morning snow | https://spoti.fi/2Q8nx5G
+32:34 - laruto - waves | https://spoti.fi/2Nk27kW
+35:25 - billy wuot - night city explorers | https://spoti.fi/3eGGPsV
+37:40 - davi juno - another hue | https://spoti.fi/3cyuW5F
+39:50 - calicronk - when it rains | https://spoti.fi/3rQYthz`;
+  const tracks=LIST.trim().split('\n').map(l=>{const m=l.trim().match(/^(?:(\d+):)?(\d{1,2}):(\d{2})\s+-\s+(.+?)\s+-\s+(.+?)\s*\|\s*(https:\/\/\S+)$/);return m&&{t:(+m[1]||0)*3600+ +m[2]*60+ +m[3],a:m[4],n:m[5],u:m[6]};}).filter(Boolean);
+  const fmt=s=>(s>=3600?Math.floor(s/3600)+':'+String(Math.floor(s%3600/60)).padStart(2,'0'):Math.floor(s/60))+':'+String(Math.floor(s%60)).padStart(2,'0');
+  let p=null,cur=-1;
+  function mark(){
+    if(cur<0)return;
+    $('ytnow').innerHTML='♪ '+esc(tracks[cur].n)+'<small>by '+esc(tracks[cur].a)+' · <a href="'+esc(tracks[cur].u)+'" target="_blank" rel="noopener">Spotify</a></small>';
+    document.querySelectorAll('#ytlist .tr').forEach((r,i)=>{
+      const on=i===cur;r.classList.toggle('on',on);
+      if(on){const l=$('ytlist');l.scrollTop=r.offsetTop-l.clientHeight/2+r.offsetHeight/2;}
+    });
+  }
+  function tick(){
+    if(!p||!p.getCurrentTime)return;
+    const t=p.getCurrentTime();let i=0;
+    tracks.forEach((x,k)=>{if(t>=x.t)i=k;});
+    if(i!==cur){cur=i;mark();}
+  }
+  function go(i){if(!p)return;p.seekTo(tracks[(i+tracks.length)%tracks.length].t,true);p.playVideo();}
+  window.initRadio=function(){
+    if(window.__ytInit)return;window.__ytInit=1;
+    $('ytlist').innerHTML=tracks.map((x,i)=>`<button class="tr" data-i="${i}"><span class="tn">${i+1}</span><span class="tt">${esc(x.n)}<small>${esc(x.a)}</small></span><span class="tm">${fmt(x.t)}</span></button>`).join('');
+    $('ytlist').addEventListener('click',e=>{const r=e.target.closest('.tr');if(r)go(+r.dataset.i);});
+    $('ynext').onclick=()=>go(cur+1);
+    $('yprev').onclick=()=>{const t=p&&p.getCurrentTime?p.getCurrentTime():0;go(cur>=0&&t-tracks[cur].t>3?cur:cur-1);};
+    $('yplay').onclick=()=>{if(p&&p.getPlayerState)p.getPlayerState()===1?p.pauseVideo():p.playVideo();};
+    window.onYouTubeIframeAPIReady=()=>{
+      p=window.__yt=new YT.Player('ytp',{videoId:VID,playerVars:{playsinline:1,rel:0},events:{
+        onReady:()=>{$('ytnow').textContent='Press play to start the playlist.';setInterval(tick,1000);},
+        onStateChange:e=>{
+          $('yplay').textContent=e.data===1?'❚❚':'▶';
+          if(e.data===1){$('themeAudio').pause();$('playBtn').textContent='▶';$('musicPanel').classList.remove('playing');}
+          if(e.data===0){p.seekTo(0,true);p.playVideo();}
+        },
+        onError:()=>{$('ytnow').innerHTML='This video can’t be played here. <a href="https://www.youtube.com/watch?v='+VID+'" target="_blank" rel="noopener">Open it on YouTube</a>.';}
+      }});
+    };
+    if(window.YT&&YT.Player)window.onYouTubeIframeAPIReady();else loadScript('https://www.youtube.com/iframe_api').catch(()=>{$('ytnow').textContent='Couldn’t load the YouTube player.';});
+  };
+})();
+
+/* DROPDOWNS (content loads on first open) */
+(function(){
+  const CHESSJS='https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js';
+  const G={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
+  function fallback(b,d){
+    b.innerHTML='';
+    if(d&&d.image){const i=document.createElement('img');i.src=d.image;i.alt='Puzzle board';b.appendChild(i);}
+    const t=document.createElement('div');t.className='ttl';t.textContent=(d&&d.title)||'Today’s puzzle';b.appendChild(t);
+    if(d&&d.url){const a=document.createElement('a');a.className='mini';a.href=d.url;a.target='_blank';a.rel='noopener';a.textContent='Solve on chess.com';b.appendChild(a);}
+    else b.textContent='Couldn’t load the puzzle. Try again later.';
+  }
+  function play(b,d,fen,sol){
+    const g=new Chess(fen),me=g.turn();let i=0,sel=null,done=false;
+    b.innerHTML='<div class="ttl"></div><div class="bd"></div><div class="st"></div><div><button class="mini" data-a="rs">Restart</button><button class="mini" data-a="sa">Show answer</button><a class="mini" target="_blank" rel="noopener">Open on chess.com</a></div>';
+    b.querySelector('.ttl').textContent=(d.title||'Today’s puzzle')+' ('+(me==='w'?'White':'Black')+' to move)';
+    b.querySelector('a').href=d.url||'https://www.chess.com/daily-chess-puzzle';
+    const bd=b.querySelector('.bd'),st=b.querySelector('.st'),say=m=>{st.textContent=m;};
+    function draw(){
+      const flip=me==='b',tg=sel?g.moves({square:sel,verbose:true}).map(m=>m.to):[];let h='';
+      for(let r=0;r<8;r++)for(let f=0;f<8;f++){
+        const rr=flip?7-r:r,ff=flip?7-f:f,sq='abcdefgh'[ff]+(8-rr),p=g.get(sq);
+        h+=`<div class="sq${(rr+ff)%2?' d':''}${sel===sq?' s':''}${tg.includes(sq)?' t':''}" data-s="${sq}">${p?`<span class="${p.color==='w'?'w':'b'}">${G[p.type]}\uFE0E</span>`:''}</div>`;
+      }
+      bd.innerHTML=h;
+    }
+    function reply(){const m=sol[i];g.move({from:m.from,to:m.to,promotion:m.promotion});i++;draw();if(i>=sol.length){done=true;say('Puzzle solved! 🎉');}else say('Your move.');}
+    function onSq(sq){
+      if(done||g.turn()!==me)return;
+      const p=g.get(sq);
+      if(sel&&sel!==sq&&!(p&&p.color===me)){
+        const e=sol[i];
+        if(e.from===sel&&e.to===sq){
+          g.move({from:sel,to:sq,promotion:e.promotion});i++;sel=null;draw();
+          if(i>=sol.length){done=true;say('Puzzle solved! 🎉');}else{say('Correct!');setTimeout(reply,500);}
+        }else{say('Not quite. Try another move.');sel=null;draw();}
+        return;
+      }
+      sel=p&&p.color===me?sq:null;draw();
+    }
+    bd.addEventListener('click',e=>{const s=e.target.closest('.sq');if(s)onSq(s.dataset.s);});
+    b.addEventListener('click',e=>{
+      const a=e.target.dataset&&e.target.dataset.a;
+      if(a==='rs'){g.load(fen);i=0;sel=null;done=false;say('');draw();}
+      if(a==='sa')say('Answer: '+sol.filter((_,k)=>k%2===0).map(m=>m.san).join(', '));
+    });
+    say('Tap a piece, then where it goes.');draw();
+  }
   async function potd(){
-    const b=$('potdBody');
+    const b=$('potdBody');let d=null;
     try{
-      const d=await (await fetch('https://api.chess.com/pub/puzzle')).json();
-      b.innerHTML='';
-      if(d.image){const i=document.createElement('img');i.src=d.image;i.alt='Puzzle board';b.appendChild(i);}
-      const t=document.createElement('div');t.className='ttl';t.textContent=d.title||'Today’s puzzle';b.appendChild(t);
-      const a=document.createElement('a');a.className='mini';a.href=d.url;a.target='_blank';a.rel='noopener';a.textContent='Solve on chess.com';b.appendChild(a);
-    }catch(e){b.textContent='Couldn’t load the puzzle. Try again later.';}
+      d=await (await fetch('https://api.chess.com/pub/puzzle')).json();
+      if(!window.Chess)await loadScript(CHESSJS);
+      const g=new Chess(d.fen);
+      const toks=d.pgn.replace(/\[[^\]]*\]/g,'').replace(/\{[^}]*\}/g,'').replace(/\d+\.(\.\.)?/g,' ').split(/\s+/).filter(t=>t&&!/^(1-0|0-1|1\/2-1\/2|\*)$/.test(t));
+      const sol=[];for(const t of toks){const m=g.move(t,{sloppy:true});if(!m)break;sol.push(m);}
+      if(!sol.length)throw new Error('no solution');
+      play(b,d,d.fen,sol);
+    }catch(e){fallback(b,d);}
   }
   async function cat(fresh){
     const b=$('cotdBody'),today=new Date().toDateString(),c=store('tcgCat');
@@ -239,7 +415,7 @@ function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(
     const i=document.createElement('img');i.src=url;i.alt='A random cat';i.onerror=()=>{b.textContent='The cat is napping. Try again later.';};b.appendChild(i);
     const btn=document.createElement('button');btn.className='mini';btn.textContent='Another cat';btn.onclick=()=>cat(true);b.appendChild(btn);
   }
-  const loaders={potd:potd,cotd:()=>cat(false)},done={};
+  const loaders={radio:()=>window.initRadio(),potd:potd,cotd:()=>cat(false)},done={};
   document.querySelectorAll('.acc').forEach(acc=>{
     const hd=acc.querySelector('.acc-hd');
     hd.addEventListener('click',()=>{
@@ -247,26 +423,6 @@ function store(k,v){try{if(v===undefined)return JSON.parse(localStorage.getItem(
       if(open&&!done[acc.id]){done[acc.id]=1;loaders[acc.id]();}
     });
   });
-})();
-
-/* MUSIC PLAYER */
-(function(){
-  const a=$('themeAudio'),btn=$('playBtn'),panel=$('musicPanel'),vol=$('vol');
-  const fmt=s=>Math.floor(s/60)+':'+Math.floor(s%60).toString().padStart(2,'0');
-  const v=store('tcgVol');if(typeof v==='number'){vol.value=v;}
-  a.volume=parseFloat(vol.value);
-  vol.addEventListener('input',()=>{a.volume=parseFloat(vol.value);store('tcgVol',a.volume);});
-  function toggle(){
-    if(a.paused){a.play().then(()=>{btn.textContent='❚❚';panel.classList.add('playing');}).catch(()=>{});}
-    else{a.pause();btn.textContent='▶';panel.classList.remove('playing');}
-  }
-  btn.addEventListener('click',toggle);
-  document.addEventListener('keydown',e=>{
-    if(e.code==='Space'&&!['BUTTON','A','INPUT'].includes(document.activeElement.tagName)){e.preventDefault();toggle();}
-  });
-  a.addEventListener('loadedmetadata',()=>{$('duration').textContent=fmt(a.duration);});
-  a.addEventListener('timeupdate',()=>{$('progressBar').style.width=(a.currentTime/a.duration)*100+'%';$('currentTime').textContent=fmt(a.currentTime);});
-  $('seek').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();a.currentTime=((e.clientX-r.left)/r.width)*a.duration;});
 })();
 
 /* INVITE BUTTON */
