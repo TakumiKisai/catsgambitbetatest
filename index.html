@@ -104,12 +104,13 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .vol{display:flex;align-items:center;gap:8px;margin-top:8px;font-size:14px;}
 .vol input{flex:1;accent-color:var(--matcha-d);min-width:0;}
 .by{font-size:12px;font-weight:700;color:var(--latte);margin-bottom:8px;}
+.tv.hide{position:absolute;left:-9999px;width:240px;height:135px;}
 .tv{aspect-ratio:16/9;width:100%;border:3px solid var(--espresso);border-radius:10px;overflow:hidden;background:#000;}
 .tv iframe{width:100%;height:100%;display:block;}
 .now{margin-top:8px;font-size:13px;font-weight:700;min-height:34px;}
 .now small{display:block;color:var(--latte);font-weight:600;}
 .ctl{display:flex;justify-content:center;gap:8px;margin-top:4px;}
-.tl{position:relative;max-height:200px;overflow-y:auto;text-align:left;margin-top:8px;border:2px solid var(--espresso);border-radius:10px;background:var(--milk);scrollbar-width:thin;}
+.tl{position:relative;max-height:260px;overflow-y:auto;text-align:left;margin-top:8px;border:2px solid var(--espresso);border-radius:10px;background:var(--milk);scrollbar-width:thin;}
 .tr{display:flex;gap:8px;width:100%;padding:6px 8px;border:0;border-bottom:1px dotted rgba(62,42,34,.25);background:none;font:600 13px 'Nunito',sans-serif;cursor:pointer;text-align:left;color:inherit;box-shadow:inset 4px 0 0 transparent;}
 .tr:hover{background:var(--blush);}
 .tr.on{background:var(--butter);box-shadow:inset 5px 0 0 var(--matcha-d);}
@@ -177,9 +178,9 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
       </div>
       <div class="ttl" style="margin:14px 0 2px;">Night café mix</div>
       <div class="by">Playlist by <a href="https://www.youtube.com/channel/UCKdURsjh1xT1vInYBy82n6g" target="_blank" rel="noopener">Chill with Taiki</a></div>
-      <div class="tv"><div id="ytp"></div></div>
+      <div class="tv hide" id="tv"><div id="ytp"></div></div>
       <div class="now" id="ytnow">Loading the playlist…</div>
-      <div class="ctl"><button class="mini" id="yprev" aria-label="Previous song">⏮</button><button class="mini" id="yplay" aria-label="Play or pause">▶</button><button class="mini" id="ynext" aria-label="Next song">⏭</button></div>
+      <div class="ctl"><button class="mini" id="yprev" aria-label="Previous song">⏮</button><button class="mini" id="yplay" aria-label="Play or pause">▶</button><button class="mini" id="ynext" aria-label="Next song">⏭</button><button class="mini" id="yvid" aria-pressed="false">🎬 Video</button></div>
       <div class="tl" id="ytlist"></div>
     </div></div></div>
   </div>
@@ -329,22 +330,23 @@ const loadScript=u=>new Promise((res,rej)=>{const s=document.createElement('scri
   window.initRadio=function(){
     if(window.__ytInit)return;window.__ytInit=1;
     $('ytlist').innerHTML=tracks.map((x,i)=>`<button class="tr" data-i="${i}"><span class="tn">${i+1}</span><span class="tt">${esc(x.n)}<small>${esc(x.a)}</small></span><span class="tm">${fmt(x.t)}</span></button>`).join('');
-    $('ytlist').addEventListener('click',e=>{const r=e.target.closest('.tr');if(r)go(+r.dataset.i);});
+    $('ytlist').addEventListener('click',e=>{const r=e.target.closest('.tr');if(!r)return;const i=+r.dataset.i;if(window.__ytBad)window.open(tracks[i].u,'_blank','noopener');else go(i);});
     $('ynext').onclick=()=>go(cur+1);
+    $('yvid').onclick=function(){const h=$('tv').classList.toggle('hide');this.setAttribute('aria-pressed',!h);};
     $('yprev').onclick=()=>{const t=p&&p.getCurrentTime?p.getCurrentTime():0;go(cur>=0&&t-tracks[cur].t>3?cur:cur-1);};
     $('yplay').onclick=()=>{if(p&&p.getPlayerState)p.getPlayerState()===1?p.pauseVideo():p.playVideo();};
     window.onYouTubeIframeAPIReady=()=>{
       p=window.__yt=new YT.Player('ytp',{videoId:VID,playerVars:{playsinline:1,rel:0},events:{
-        onReady:()=>{$('ytnow').textContent='Press play to start the playlist.';setInterval(tick,1000);},
+        onReady:()=>{$('ytnow').textContent='Tap a song to play it.';setInterval(tick,1000);},
         onStateChange:e=>{
           $('yplay').textContent=e.data===1?'❚❚':'▶';
           if(e.data===1){$('themeAudio').pause();$('playBtn').textContent='▶';$('musicPanel').classList.remove('playing');}
           if(e.data===0){p.seekTo(0,true);p.playVideo();}
         },
-        onError:()=>{$('ytnow').innerHTML='This video can’t be played here. <a href="https://www.youtube.com/watch?v='+VID+'" target="_blank" rel="noopener">Open it on YouTube</a>.';}
+        onError:()=>{window.__ytBad=1;$('ytnow').textContent='Playback is blocked here, so tapping a song opens it on Spotify.';}
       }});
     };
-    if(window.YT&&YT.Player)window.onYouTubeIframeAPIReady();else loadScript('https://www.youtube.com/iframe_api').catch(()=>{$('ytnow').textContent='Couldn’t load the YouTube player.';});
+    if(window.YT&&YT.Player)window.onYouTubeIframeAPIReady();else loadScript('https://www.youtube.com/iframe_api').catch(()=>{window.__ytBad=1;$('ytnow').textContent='Player blocked here, so tapping a song opens it on Spotify.';});
   };
 })();
 
@@ -410,7 +412,8 @@ const loadScript=u=>new Promise((res,rej)=>{const s=document.createElement('scri
   async function cat(fresh){
     const b=$('cotdBody'),today=new Date().toDateString(),c=store('tcgCat');
     let url=!fresh&&c&&c.d===today?c.u:null;
-    if(!url){try{const d=await (await fetch('https://api.thecatapi.com/v1/images/search')).json();url=d[0].url;store('tcgCat',{d:today,u:url});}catch(e){b.textContent='The cat is napping. Try again later.';return;}}
+    if(!url){try{const d=await (await fetch('https://api.thecatapi.com/v1/images/search')).json();url=d[0].url;}catch(e){try{const d=await (await fetch('https://cataas.com/cat?json=true')).json();url=d.url||('https://cataas.com/cat/'+(d._id||d.id));}catch(e2){b.textContent='The cat is napping. Try again later.';return;}}
+      store('tcgCat',{d:today,u:url});}
     b.innerHTML='';
     const i=document.createElement('img');i.src=url;i.alt='A random cat';i.onerror=()=>{b.textContent='The cat is napping. Try again later.';};b.appendChild(i);
     const btn=document.createElement('button');btn.className='mini';btn.textContent='Another cat';btn.onclick=()=>cat(true);b.appendChild(btn);
