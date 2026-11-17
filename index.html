@@ -90,7 +90,7 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 /* RADIO BAR (animated gradient) */
 .radio>.acc-hd{background:var(--rg);background-size:300% 100%;animation:flow 9s linear infinite;}
 .radio>.acc-hd:hover{background:var(--rg);background-size:300% 100%;box-shadow:inset 15px 0 0 var(--matcha-d),0 0 20px 4px rgba(246,217,139,.9);}
-.mp{position:relative;background:var(--foam);border:2px solid var(--espresso);border-radius:14px;padding:12px;}
+.mp{text-align:center;position:relative;background:var(--foam);border:2px solid var(--espresso);border-radius:14px;padding:12px;}
 .steam{position:absolute;top:6px;left:50%;width:40px;margin-left:-20px;display:flex;justify-content:space-between;pointer-events:none;}
 .steam i{width:7px;height:7px;border-radius:50%;background:var(--latte);opacity:0;}
 .playing .steam i{animation:puff 2s ease-out infinite;}
@@ -107,10 +107,10 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .tv.hide{position:absolute;left:-9999px;width:240px;height:135px;}
 .tv{aspect-ratio:16/9;width:100%;border:3px solid var(--espresso);border-radius:10px;overflow:hidden;background:#000;}
 .tv iframe{width:100%;height:100%;display:block;}
-.now{margin-top:8px;font-size:13px;font-weight:700;min-height:34px;}
+.now{font-size:13px;font-weight:700;text-align:left;}
 .now small{display:block;color:var(--latte);font-weight:600;}
 .ctl{display:flex;justify-content:center;gap:8px;margin-top:4px;}
-.tl{position:relative;max-height:260px;overflow-y:auto;text-align:left;margin-top:8px;border:2px solid var(--espresso);border-radius:10px;background:var(--milk);scrollbar-width:thin;}
+.tl{position:relative;max-height:135px;overflow-y:auto;text-align:left;margin-top:8px;border:2px solid var(--espresso);border-radius:10px;background:var(--milk);scrollbar-width:thin;}
 .tr{display:flex;gap:8px;width:100%;padding:6px 8px;border:0;border-bottom:1px dotted rgba(62,42,34,.25);background:none;font:600 13px 'Nunito',sans-serif;cursor:pointer;text-align:left;color:inherit;box-shadow:inset 4px 0 0 transparent;}
 .tr:hover{background:var(--blush);}
 .tr.on{background:var(--butter);box-shadow:inset 5px 0 0 var(--matcha-d);}
@@ -119,6 +119,15 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 .tt small{display:block;color:var(--latte);font-weight:600;font-size:11px;}
 .tm{color:var(--latte);font-size:11px;flex-shrink:0;}
 
+.air{display:flex;align-items:center;gap:8px;margin:2px 0 8px;padding-bottom:8px;border-bottom:2px dotted rgba(62,42,34,.3);}
+.tag{flex-shrink:0;font-size:10px;font-weight:800;letter-spacing:.5px;padding:3px 8px;border-radius:99px;border:2px solid var(--espresso);background:var(--milk);color:var(--latte);}
+.tag.on{background:var(--blush-d);color:var(--milk);}
+.add{display:flex;gap:6px;margin-top:8px;}
+.add input{flex:1;min-width:0;padding:6px 12px;border:2px solid var(--espresso);border-radius:99px;background:var(--milk);color:inherit;font:600 13px 'Nunito',sans-serif;}
+.cr{display:flex;align-items:center;border-bottom:1px dotted rgba(62,42,34,.25);}
+.cr .tr{flex:1;border-bottom:0;}
+.rm{border:0;background:none;cursor:pointer;color:var(--latte);font-size:14px;padding:6px 10px;}
+.rm:hover{color:var(--blush-d);}
 /* PUZZLE BOARD */
 .bd{display:grid;grid-template-columns:repeat(8,1fr);aspect-ratio:1;border:2px solid var(--espresso);border-radius:8px;overflow:hidden;margin-bottom:8px;user-select:none;}
 .sq{display:flex;align-items:center;justify-content:center;font-size:min(8vw,32px);line-height:1;cursor:pointer;background:#f3e2c8;font-family:'Segoe UI Symbol','Noto Sans Symbols 2','DejaVu Sans',sans-serif;}
@@ -164,24 +173,30 @@ button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(-
 <div class="main">
   <div class="sep"><div class="sep-l"></div><div class="sep-g"><span class="gem"></span></div><div class="sep-r"></div><span class="walker">🐾 🐾 🐾</span></div>
 
-  <div class="acc radio" id="radio">
-    <button class="acc-hd" aria-expanded="false"><span class="acc-t">📻 Café radio</span><span class="acc-ch">▾</span></button>
+  <div class="mp" id="musicPanel">
+    <div class="steam"><i></i><i></i><i></i></div>
+    <div class="air"><span class="tag" id="airTag">OFF AIR</span><div class="now" id="airTxt">Radio is off. Press play on the theme or pick a song.</div></div>
+    <div class="ttl">Club theme</div>
+    <audio id="themeAudio" preload="metadata"><source src="PokemonLeagueNight.mp3" type="audio/mpeg"></audio>
+    <button class="music-btn" id="playBtn" aria-label="Play or pause the club theme">▶</button>
+    <div class="music-progress-wrap" id="seek"><div class="music-progress" id="progressBar"></div></div>
+    <div class="music-time"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+    <div class="vol"><span aria-hidden="true">🔈</span><input type="range" id="vol" min="0" max="1" step="0.05" value="0.6" aria-label="Volume"></div>
+  </div>
+
+  <div class="acc radio" id="radio" style="margin-top:12px">
+    <button class="acc-hd" aria-expanded="false"><span class="acc-t">📻 Playlist</span><span class="acc-ch">▾</span></button>
     <div class="acc-bd"><div class="acc-in"><div class="acc-card">
-      <div class="mp" id="musicPanel">
-        <div class="steam"><i></i><i></i><i></i></div>
-        <div class="ttl">Club theme</div>
-        <audio id="themeAudio" preload="metadata"><source src="PokemonLeagueNight.mp3" type="audio/mpeg"></audio>
-        <button class="music-btn" id="playBtn" aria-label="Play or pause the club theme">▶</button>
-        <div class="music-progress-wrap" id="seek"><div class="music-progress" id="progressBar"></div></div>
-        <div class="music-time"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
-        <div class="vol"><span aria-hidden="true">🔈</span><input type="range" id="vol" min="0" max="1" step="0.05" value="0.6" aria-label="Volume"></div>
-      </div>
-      <div class="ttl" style="margin:14px 0 2px;">Night café mix</div>
+      <div class="ttl">Night café mix</div>
       <div class="by">Playlist by <a href="https://www.youtube.com/channel/UCKdURsjh1xT1vInYBy82n6g" target="_blank" rel="noopener">Chill with Taiki</a></div>
       <div class="tv hide" id="tv"><div id="ytp"></div></div>
-      <div class="now" id="ytnow">Loading the playlist…</div>
       <div class="ctl"><button class="mini" id="yprev" aria-label="Previous song">⏮</button><button class="mini" id="yplay" aria-label="Play or pause">▶</button><button class="mini" id="ynext" aria-label="Next song">⏭</button><button class="mini" id="yvid" aria-pressed="false">🎬 Video</button></div>
       <div class="tl" id="ytlist"></div>
+      <div class="ttl" style="margin:16px 0 2px;">🐱 Cat’s playlist</div>
+      <div class="by">Add a YouTube link (plays here) or a Spotify link (opens in a new tab). Saved on this device.</div>
+      <div class="add"><input id="cin" type="url" placeholder="Paste a song link…" aria-label="Song link"><button class="mini" id="cadd">Add</button></div>
+      <div class="st" id="cmsg"></div>
+      <div class="tl" id="clist"></div>
     </div></div></div>
   </div>
 
@@ -287,10 +302,9 @@ const loadScript=u=>new Promise((res,rej)=>{const s=document.createElement('scri
   $('seek').addEventListener('click',e=>{const r=e.currentTarget.getBoundingClientRect();a.currentTime=((e.clientX-r.left)/r.width)*a.duration;});
 })();
 
-/* YOUTUBE PLAYLIST (one long video split into songs by timestamps) */
+/* RADIO: club theme + Night café mix + Cat's playlist */
 (function(){
   const VID='9FvvbVI5rYA';
-  /* One song per line: "time - Artist - Title | link". A description's tracklist pastes in as is. */
   const LIST=`0:00 - The King Chameleon - sad dream | https://spoti.fi/38ZLPpd
 2:42 - Says Phoebe - Forgetful | https://spoti.fi/3bTKUbL
 5:05 - Banks, sftspkn - Blossoms | https://spoti.fi/3bOLxTA
@@ -311,42 +325,115 @@ const loadScript=u=>new Promise((res,rej)=>{const s=document.createElement('scri
 39:50 - calicronk - when it rains | https://spoti.fi/3rQYthz`;
   const tracks=LIST.trim().split('\n').map(l=>{const m=l.trim().match(/^(?:(\d+):)?(\d{1,2}):(\d{2})\s+-\s+(.+?)\s+-\s+(.+?)\s*\|\s*(https:\/\/\S+)$/);return m&&{t:(+m[1]||0)*3600+ +m[2]*60+ +m[3],a:m[4],n:m[5],u:m[6]};}).filter(Boolean);
   const fmt=s=>(s>=3600?Math.floor(s/3600)+':'+String(Math.floor(s%3600/60)).padStart(2,'0'):Math.floor(s/60))+':'+String(Math.floor(s%60)).padStart(2,'0');
-  let p=null,cur=-1;
+  const th=$('themeAudio');
+  let p=null,cur=-1,vid=VID,mode='mix',ci=-1,now=null,bad=false,msg='';
+  let cats=store('tcgCats');if(!Array.isArray(cats))cats=[];
+  function ytId(u){try{const x=new URL(u),h=x.hostname.replace(/^(www|m|music)\./,'');let id=null;
+    if(h==='youtu.be')id=x.pathname.slice(1).split('/')[0];
+    else if(h==='youtube.com')id=x.searchParams.get('v')||(x.pathname.match(/^\/(?:shorts|embed|live)\/([\w-]+)/)||[])[1];
+    return /^[\w-]{11}$/.test(id||'')?id:null;}catch(e){return null;}}
+
+  /* the "on air" line under the theme player: always visible */
+  function render(){
+    const tp=!th.paused,yp=!!(p&&p.getPlayerState&&p.getPlayerState()===1),on=tp||(yp&&!!now);let t;
+    if(msg)t=esc(msg);
+    else if(tp)t='Club theme<small>The Cat’s Gambit theme</small>';
+    else if(now)t=(yp?'':'Paused · ')+esc(now.n)+'<small>'+esc(now.a)+'</small>';
+    else t='Radio is off. Press play on the theme or pick a song.';
+    $('airTxt').innerHTML=t;const g=$('airTag');g.textContent=on?'ON AIR':'OFF AIR';g.classList.toggle('on',on);
+  }
   function mark(){
-    if(cur<0)return;
-    $('ytnow').innerHTML='♪ '+esc(tracks[cur].n)+'<small>by '+esc(tracks[cur].a)+' · <a href="'+esc(tracks[cur].u)+'" target="_blank" rel="noopener">Spotify</a></small>';
-    document.querySelectorAll('#ytlist .tr').forEach((r,i)=>{
-      const on=i===cur;r.classList.toggle('on',on);
-      if(on){const l=$('ytlist');l.scrollTop=r.offsetTop-l.clientHeight/2+r.offsetHeight/2;}
-    });
+    document.querySelectorAll('#ytlist .tr').forEach((r,i)=>{const on=mode==='mix'&&i===cur;r.classList.toggle('on',on);if(on){const l=$('ytlist');l.scrollTop=r.offsetTop-l.clientHeight/2+r.offsetHeight/2;}});
+    document.querySelectorAll('#clist .tr').forEach((r,i)=>{const on=mode==='cat'&&i===ci;r.classList.toggle('on',on);if(on){const l=$('clist'),w=r.parentNode;l.scrollTop=w.offsetTop-l.clientHeight/2+w.offsetHeight/2;}});
+    if(mode==='mix'&&cur>=0)now={n:tracks[cur].n,a:tracks[cur].a};
+    render();
   }
   function tick(){
-    if(!p||!p.getCurrentTime)return;
-    const t=p.getCurrentTime();let i=0;
-    tracks.forEach((x,k)=>{if(t>=x.t)i=k;});
+    if(!p||!p.getCurrentTime||mode!=='mix'||vid!==VID||p.getPlayerState()!==1)return;
+    const t=p.getCurrentTime();let i=0;tracks.forEach((x,k)=>{if(t>=x.t)i=k;});
     if(i!==cur){cur=i;mark();}
   }
-  function go(i){if(!p)return;p.seekTo(tracks[(i+tracks.length)%tracks.length].t,true);p.playVideo();}
+  function wait(){msg='Player is still loading. Tap again in a second.';render();}
+  function go(i){
+    if(!p)return wait();
+    cur=(i+tracks.length)%tracks.length;mode='mix';ci=-1;msg='';
+    const s=tracks[cur].t;
+    if(vid!==VID){vid=VID;p.loadVideoById({videoId:VID,startSeconds:s});}else{p.seekTo(s,true);p.playVideo();}
+    mark();
+  }
+  function playCat(i){
+    const c=cats[i];if(!c)return;
+    if(!c.id||bad){window.open(c.u,'_blank','noopener');return;}
+    if(!p)return wait();
+    ci=i;mode='cat';cur=-1;msg='';vid=c.id;now={n:c.n,a:'Cat’s playlist'};
+    p.loadVideoById(c.id);mark();
+  }
+  function step(d){
+    if(mode==='cat'){const ids=cats.map((c,k)=>c.id?k:-1).filter(k=>k>=0);if(ids.length){playCat(ids[(ids.indexOf(ci)+d+ids.length)%ids.length]);return;}}
+    if(cur<0)return go(0);
+    if(d<0){const t=p&&p.getCurrentTime?p.getCurrentTime():0;go(t-tracks[cur].t>3?cur:cur-1);}else go(cur+1);
+  }
+
+  /* Cat's playlist (saved in this browser) */
+  function renderCats(){
+    const l=$('clist');
+    if(!cats.length){l.innerHTML='<div class="note">No songs yet. Paste a link above to add the first one.</div>';return;}
+    l.innerHTML=cats.map((c,i)=>`<div class="cr"><button class="tr" data-i="${i}"><span class="tn">${i+1}</span><span class="tt">${esc(c.n)}<small>${c.id?'YouTube':'Opens in a new tab'}</small></span></button><button class="rm" data-i="${i}" aria-label="Remove song">✕</button></div>`).join('');
+    mark();
+  }
+  async function title(u,id){
+    const o=id?'https://www.youtube.com/oembed?format=json&url='+encodeURIComponent(u):/spotify\.com|spoti\.fi/.test(u)?'https://open.spotify.com/oembed?url='+encodeURIComponent(u):null;
+    if(o){try{const d=await (await fetch(o)).json();if(d.title)return d.title;}catch(e){}}
+    try{return new URL(u).hostname.replace(/^www\./,'');}catch(e){return u;}
+  }
+  async function add(){
+    const inp=$('cin'),u=inp.value.trim(),m=$('cmsg');let ok=false;
+    try{ok=/^https?:$/.test(new URL(u).protocol);}catch(e){}
+    if(!ok){m.textContent='Paste a full link starting with https://';return;}
+    if(cats.some(c=>c.u===u)){m.textContent='That song is already in the playlist.';return;}
+    if(cats.length>=30){m.textContent='The playlist is full (30 songs).';return;}
+    m.textContent='Adding…';const id=ytId(u);
+    cats.push({u,id,n:await title(u,id)});store('tcgCats',cats);inp.value='';m.textContent='Added! 🐾';renderCats();
+  }
+
+  th.addEventListener('play',()=>{msg='';render();});
+  th.addEventListener('pause',render);
+  render();
+
   window.initRadio=function(){
     if(window.__ytInit)return;window.__ytInit=1;
     $('ytlist').innerHTML=tracks.map((x,i)=>`<button class="tr" data-i="${i}"><span class="tn">${i+1}</span><span class="tt">${esc(x.n)}<small>${esc(x.a)}</small></span><span class="tm">${fmt(x.t)}</span></button>`).join('');
-    $('ytlist').addEventListener('click',e=>{const r=e.target.closest('.tr');if(!r)return;const i=+r.dataset.i;if(window.__ytBad)window.open(tracks[i].u,'_blank','noopener');else go(i);});
-    $('ynext').onclick=()=>go(cur+1);
-    $('yvid').onclick=function(){const h=$('tv').classList.toggle('hide');this.setAttribute('aria-pressed',!h);};
-    $('yprev').onclick=()=>{const t=p&&p.getCurrentTime?p.getCurrentTime():0;go(cur>=0&&t-tracks[cur].t>3?cur:cur-1);};
+    renderCats();
+    $('ytlist').addEventListener('click',e=>{const r=e.target.closest('.tr');if(!r)return;const i=+r.dataset.i;if(bad)window.open(tracks[i].u,'_blank','noopener');else go(i);});
+    $('clist').addEventListener('click',e=>{
+      const x=e.target.closest('.rm');
+      if(x){const i=+x.dataset.i;cats.splice(i,1);store('tcgCats',cats);if(i<ci)ci--;else if(i===ci)ci=-1;renderCats();return;}
+      const r=e.target.closest('.tr');if(r)playCat(+r.dataset.i);
+    });
+    $('cadd').onclick=add;
+    $('cin').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();add();}});
+    $('ynext').onclick=()=>step(1);
+    $('yprev').onclick=()=>step(-1);
     $('yplay').onclick=()=>{if(p&&p.getPlayerState)p.getPlayerState()===1?p.pauseVideo():p.playVideo();};
+    $('yvid').onclick=function(){const h=$('tv').classList.toggle('hide');this.setAttribute('aria-pressed',!h);};
     window.onYouTubeIframeAPIReady=()=>{
       p=window.__yt=new YT.Player('ytp',{videoId:VID,playerVars:{playsinline:1,rel:0},events:{
-        onReady:()=>{$('ytnow').textContent='Tap a song to play it.';setInterval(tick,1000);},
+        onReady:()=>{setInterval(tick,1000);},
         onStateChange:e=>{
           $('yplay').textContent=e.data===1?'❚❚':'▶';
-          if(e.data===1){$('themeAudio').pause();$('playBtn').textContent='▶';$('musicPanel').classList.remove('playing');}
-          if(e.data===0){p.seekTo(0,true);p.playVideo();}
+          if(e.data===1){msg='';th.pause();$('playBtn').textContent='▶';$('musicPanel').classList.remove('playing');tick();}
+          if(e.data===0){if(mode==='cat')step(1);else if(vid===VID){p.seekTo(0,true);p.playVideo();}}
+          render();
         },
-        onError:()=>{window.__ytBad=1;$('ytnow').textContent='Playback is blocked here, so tapping a song opens it on Spotify.';}
+        onError:()=>{
+          if(mode==='cat')msg='That video can’t be played here. Try another one, or open it on YouTube.';
+          else{bad=true;msg='Playback is blocked here, so tapping a song opens it on Spotify.';}
+          render();
+        }
       }});
     };
-    if(window.YT&&YT.Player)window.onYouTubeIframeAPIReady();else loadScript('https://www.youtube.com/iframe_api').catch(()=>{window.__ytBad=1;$('ytnow').textContent='Player blocked here, so tapping a song opens it on Spotify.';});
+    if(window.YT&&YT.Player)window.onYouTubeIframeAPIReady();
+    else loadScript('https://www.youtube.com/iframe_api').catch(()=>{bad=true;msg='Player blocked here, so tapping a song opens it on Spotify.';render();});
   };
 })();
 
