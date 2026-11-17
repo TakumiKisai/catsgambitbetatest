@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Cat’s Gambit</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --milk:#fff8ee;--foam:#fdeedd;--blush:#f4b9b2;--blush-d:#e8908a;
+  --matcha:#7fa37a;--matcha-d:#5c8057;--butter:#f6d98b;
+  --espresso:#3e2a22;--latte:#7a5a4a;--wood:#9a6b45;--chalk:#f6f1e6;--board:#34332f;
+}
+html,body{width:100%;background:var(--foam);}
+.wrap{font-family:'Nunito',sans-serif;color:var(--espresso);width:100%;min-height:100vh;position:relative;overflow:hidden;
+  background:var(--foam) radial-gradient(circle at 1px 1px,rgba(154,107,69,.12) 1px,transparent 1.5px) 0 0/18px 18px;}
+.paws{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.paw{position:absolute;bottom:-40px;font-size:18px;opacity:0;animation:rise var(--t) linear var(--d) infinite;}
+@keyframes rise{0%{transform:translateY(0) rotate(-12deg);opacity:0;}10%{opacity:.22;}90%{opacity:.22;}100%{transform:translateY(-115vh) rotate(14deg);opacity:0;}}
+@media (prefers-reduced-motion:reduce){.paw{animation:none;}}
+
+/* AWNING */
+.awning{position:relative;z-index:2;height:44px;
+  background:repeating-linear-gradient(90deg,var(--matcha) 0 28px,var(--milk) 28px 56px);
+  -webkit-mask:linear-gradient(#000 0 0) top/100% 30px no-repeat,radial-gradient(circle at 14px 0,#000 14px,transparent 14.5px) bottom/28px 14px repeat-x;
+  mask:linear-gradient(#000 0 0) top/100% 30px no-repeat,radial-gradient(circle at 14px 0,#000 14px,transparent 14.5px) bottom/28px 14px repeat-x;
+  filter:drop-shadow(0 3px 0 rgba(62,42,34,.12));}
+
+/* HERO */
+.hero{position:relative;z-index:2;text-align:center;padding:14px 16px 4px;}
+.hero-title{font-family:'Fredoka',sans-serif;font-weight:600;font-size:40px;line-height:1;color:var(--espresso);letter-spacing:.5px;}
+.hero-title span{display:block;font-size:24px;font-weight:500;color:var(--blush-d);margin-top:2px;}
+.hero-tag{font-size:13px;font-weight:700;color:var(--latte);margin-top:8px;}
+.owner-card{display:flex;flex-direction:column;align-items:center;margin-top:18px;}
+.avatar-wrap{position:relative;width:150px;height:150px;}
+.avatar-wrap::before,.avatar-wrap::after{content:'';position:absolute;top:-10px;width:0;height:0;border-left:22px solid transparent;border-right:22px solid transparent;border-bottom:38px solid var(--blush);z-index:0;}
+.avatar-wrap::before{left:6px;transform:rotate(-14deg);}
+.avatar-wrap::after{right:6px;transform:rotate(14deg);}
+.avatar-wrap img{position:relative;z-index:1;width:150px;height:150px;border-radius:50%;object-fit:cover;display:block;border:5px solid var(--blush);background:var(--milk);box-shadow:0 6px 0 rgba(62,42,34,.12);transition:transform .2s;}
+.avatar-wrap img:hover{transform:rotate(-4deg) scale(1.04);}
+.owner-name{margin-top:12px;font-family:'Fredoka',sans-serif;font-weight:500;font-size:19px;color:var(--espresso);text-decoration:none;}
+.owner-name:hover{color:var(--matcha-d);text-decoration:underline;text-underline-offset:3px;}
+.owner-status{margin-top:4px;font-size:12px;font-weight:800;color:var(--milk);background:var(--matcha);padding:3px 12px;border-radius:99px;}
+
+/* CHECKERBOARD DIVIDER */
+.sep{height:12px;margin:24px 0;border-radius:3px;opacity:.8;background:repeating-conic-gradient(var(--espresso) 0 25%,var(--milk) 0 50%) 0 0/12px 12px;border:1px solid var(--espresso);}
+
+.main{position:relative;z-index:2;padding:0 16px;}
+
+/* SECTION HEADINGS */
+.sec-hd{margin:6px 0 12px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
+.sec-hd-title{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;color:var(--espresso);}
+.sec-hd-sub{font-size:13px;font-weight:600;color:var(--latte);}
+
+/* MUSIC */
+.music-panel{background:var(--milk);border:3px solid var(--espresso);border-radius:18px;padding:16px;box-shadow:0 5px 0 var(--espresso);text-align:center;}
+.music-btn{width:54px;height:54px;border:3px solid var(--espresso);border-radius:50%;background:var(--butter);color:var(--espresso);font-size:20px;cursor:pointer;display:block;margin:0 auto 14px;box-shadow:0 3px 0 var(--espresso);transition:transform .1s,box-shadow .1s;}
+.music-btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--espresso);}
+.music-btn:focus-visible,.invite-btn:focus-visible,.l-btn:focus-visible,.m-card:focus-visible{outline:3px solid var(--matcha-d);outline-offset:2px;}
+.music-progress-wrap{height:10px;background:var(--foam);border:2px solid var(--espresso);border-radius:99px;overflow:hidden;cursor:pointer;}
+.music-progress{height:100%;width:0%;background:var(--matcha);transition:width .1s linear;}
+.music-time{display:flex;justify-content:space-between;margin-top:8px;font-size:12px;font-weight:800;color:var(--latte);}
+
+/* MEMBERS */
+.members-list{display:flex;flex-direction:column;gap:14px;padding-top:6px;}
+.m-card{position:relative;display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--milk);border:2px solid var(--espresso);border-radius:14px;text-decoration:none;color:inherit;transition:transform .15s,background .15s;}
+.m-card::before,.m-card::after{content:'';position:absolute;top:-9px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:11px solid var(--espresso);}
+.m-card::before{left:14px;transform:rotate(-8deg);}
+.m-card::after{right:14px;transform:rotate(8deg);}
+.m-card:hover{background:var(--blush);transform:translateY(-2px);}
+.m-av{width:38px;height:38px;border-radius:50%;border:2px solid var(--espresso);object-fit:cover;flex-shrink:0;}
+.m-name{font-family:'Fredoka',sans-serif;font-size:15px;font-weight:500;}
+.m-meta{font-size:12px;font-weight:700;color:var(--matcha-d);margin-top:1px;}
+.m-card:hover .m-meta{color:var(--espresso);}
+.m-time{margin-left:auto;font-size:11px;font-weight:800;color:var(--latte);white-space:nowrap;}
+
+/* CHALKBOARD MENU */
+.board{background:var(--board);border:8px solid var(--wood);border-radius:12px;padding:14px;box-shadow:0 5px 0 rgba(62,42,34,.35),inset 0 0 24px rgba(0,0,0,.35);}
+.board-title{font-family:'Fredoka',sans-serif;font-weight:500;font-size:18px;color:var(--chalk);text-align:center;padding-bottom:8px;margin-bottom:8px;border-bottom:2px dashed rgba(246,241,230,.45);}
+.links-wrap{max-height:260px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--chalk) transparent;}
+.links-list{display:flex;flex-direction:column;}
+.l-btn{display:flex;align-items:center;gap:10px;padding:10px 4px;color:var(--chalk);text-decoration:none;font-size:15px;font-weight:700;border-bottom:1px dotted rgba(246,241,230,.3);transition:padding .15s,color .15s;}
+.l-btn:last-child{border-bottom:none;}
+.l-btn:hover{color:var(--butter);padding-left:10px;}
+.l-ico{width:24px;text-align:center;flex-shrink:0;}
+.l-txt{flex:1;}
+.l-dots{flex:0 0 auto;font-size:13px;color:rgba(246,241,230,.55);}
+
+/* INVITE */
+.invite{background:var(--blush);border:3px dashed var(--espresso);border-radius:18px;padding:18px;text-align:center;}
+.invite-title{font-family:'Fredoka',sans-serif;font-weight:600;font-size:22px;margin-bottom:4px;}
+.invite-sub{font-size:13px;font-weight:700;color:var(--espresso);margin-bottom:14px;}
+.invite-btn{display:inline-flex;align-items:center;gap:6px;padding:9px 20px;border:3px solid var(--espresso);border-radius:99px;background:var(--matcha);color:var(--milk);font-family:'Fredoka',sans-serif;font-weight:500;font-size:15px;cursor:pointer;box-shadow:0 3px 0 var(--espresso);transition:transform .1s,box-shadow .1s;}
+.invite-btn:active{transform:translateY(3px);box-shadow:0 0 0 var(--espresso);}
+
+.footer{position:relative;z-index:2;text-align:center;padding:10px 14px 24px;}
+.footer-name{font-family:'Fredoka',sans-serif;font-weight:500;font-size:16px;color:var(--latte);}
+.footer-copy,.footer-rights{font-size:11px;font-weight:700;color:var(--latte);opacity:.75;margin-top:3px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="paws" id="paws"></div>
+<div class="awning"></div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-title">The Cat’s<span>Gambit</span></div>
+  <div class="hero-tag">A cozy chess café, open since April 18, 2026</div>
+
+  <div class="owner-card">
+    <div class="avatar-wrap"><img id="ownerAvatar" src="" alt="Club owner’s avatar"></div>
+    <a class="owner-name" href="https://www.chess.com/member/afm_plays_chess" target="_blank" rel="noopener">@afm_plays_chess</a>
+    <div class="owner-status">Café owner 👑</div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="sep"></div>
+
+  <!-- MUSIC -->
+  <div class="sec-hd">
+    <div class="sec-hd-title">Café radio</div>
+    <div class="sec-hd-sub">Now playing the club theme</div>
+  </div>
+  <div class="music-panel">
+    <audio id="themeAudio" loop>
+      <source src="PokemonLeagueNight.mp3" type="audio/mpeg">
+    </audio>
+    <button class="music-btn" id="playBtn" aria-label="Play or pause the club theme">▶</button>
+    <div class="music-progress-wrap"><div class="music-progress" id="progressBar"></div></div>
+    <div class="music-time"><span id="currentTime">0:00</span><span id="duration">0:00</span></div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- NEWEST MEMBERS -->
+  <div class="sec-hd">
+    <div class="sec-hd-title">Newest regulars</div>
+    <div class="sec-hd-sub">Just walked in 🐾</div>
+  </div>
+  <div class="members-list" id="membersList"></div>
+
+  <div class="sep"></div>
+
+  <!-- LINKS -->
+  <div class="board">
+    <div class="board-title">☕ Today’s menu ☕</div>
+    <div class="links-wrap">
+      <div class="links-list">
+        <a class="l-btn" href="https://www.chess.com/clubs/forum/view/club-rules-and-warning-system" target="_blank" rel="noopener"><span class="l-ico">📜</span><span class="l-txt">House rules</span><span class="l-dots">~</span></a>
+        <a class="l-btn" href="https://www.chess.com/clubs/forum/view/promotion-and-demotion-3" target="_blank" rel="noopener"><span class="l-ico">⬆️</span><span class="l-txt">Promotions</span><span class="l-dots">~</span></a>
+        <a class="l-btn" href="https://www.chess.com/clubs/forum/view/terribly-brilliant-shockingly-accurate-and-embarrassingly-blunderous-chess-games" target="_blank" rel="noopener"><span class="l-ico">🏆</span><span class="l-txt">Chess games</span><span class="l-dots">~</span></a>
+        <a class="l-btn" href="https://www.chess.com/clubs/forum/view/suggestions-for-the-club-15" target="_blank" rel="noopener"><span class="l-ico">🧋</span><span class="l-txt">Suggestion box</span><span class="l-dots">~</span></a>
+        <a class="l-btn" href="https://www.chess.com/clubs/forum/view/cat-chat-1" target="_blank" rel="noopener"><span class="l-ico">🐱</span><span class="l-txt">Cat chat</span><span class="l-dots">~</span></a>
+      </div>
+    </div>
+  </div>
+
+  <div class="sep"></div>
+
+  <!-- INVITE -->
+  <div class="invite">
+    <div class="invite-title">Bring a friend</div>
+    <div class="invite-sub">Copy the link and save them a seat at our table.</div>
+    <button class="invite-btn" id="inviteBtn">🐾 Copy invite link</button>
+  </div>
+
+  <div class="footer">
+    <div class="footer-name">The Cat’s Gambit</div>
+    <div class="footer-copy">© 2026 The Cat’s Gambit</div>
+    <div class="footer-rights">Sidebar by @ProjectionSorcery</div>
+  </div>
+</div>
+</div>
+
+<script>
+/* FLOATING PAWS */
+(function(){
+  const c=document.getElementById('paws');
+  for(let i=0;i<9;i++){
+    const el=document.createElement('div');el.className='paw';el.textContent='🐾';
+    const dur=14+Math.random()*10;
+    el.style.cssText=`left:${Math.random()*100}%;--t:${dur}s;--d:${-Math.random()*dur}s;font-size:${14+Math.random()*10}px;`;
+    c.appendChild(el);
+  }
+})();
+
+/* MEMBERS */
+(function(){
+  function ago(ts){const s=Math.floor((Date.now()-ts*1000)/1000);if(s<60)return s+'s ago';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';if(s<604800)return Math.floor(s/86400)+'d ago';return Math.floor(s/604800)+'w ago';}
+  async function go(){
+    try{
+      const r=await fetch('https://api.chess.com/pub/club/the-cats-gambit/members');
+      const d=await r.json();
+      const all=[...(d.weekly||[]),...(d.monthly||[])].sort((a,b)=>b.joined-a.joined).slice(0,3);
+      const rows=await Promise.all(all.map(async m=>{
+        const[pj,st]=await Promise.all([fetch('https://api.chess.com/pub/player/'+m.username).then(x=>x.json()),fetch('https://api.chess.com/pub/player/'+m.username+'/stats').then(x=>x.json())]);
+        const rats=[{t:'Rapid',v:st.chess_rapid?.last?.rating},{t:'Blitz',v:st.chess_blitz?.last?.rating},{t:'Bullet',v:st.chess_bullet?.last?.rating},{t:'Daily',v:st.chess_daily?.last?.rating}].filter(x=>x.v).sort((a,b)=>b.v-a.v);
+        const best=rats[0]||{t:'?',v:'?'};
+        return{u:m.username,av:pj.avatar||'https://taki2023.github.io/taki/default-pawn.png',rt:best.t,rv:best.v,j:m.joined};
+      }));
+      document.getElementById('membersList').innerHTML=rows.map(m=>`<a class="m-card" href="https://www.chess.com/member/${m.u}" target="_blank" rel="noopener"><img class="m-av" src="${m.av}" alt=""><div><div class="m-name">@${m.u}</div><div class="m-meta">${m.rt}: ${m.rv}</div></div><div class="m-time">${ago(m.j)}</div></a>`).join('');
+    }catch(e){document.getElementById('membersList').innerHTML='<div style="font-size:13px;font-weight:700;color:var(--latte);padding:8px;">Couldn’t load the newest regulars. Try refreshing.</div>';}
+  }
+  window.addEventListener('DOMContentLoaded',go);
+})();
+
+/* MUSIC PLAYER */
+(function(){
+  const audio=document.getElementById('themeAudio');
+  const playBtn=document.getElementById('playBtn');
+  const progress=document.getElementById('progressBar');
+  const current=document.getElementById('currentTime');
+  const duration=document.getElementById('duration');
+  function format(s){const m=Math.floor(s/60);return m+':'+Math.floor(s%60).toString().padStart(2,'0');}
+  playBtn.addEventListener('click',()=>{
+    if(audio.paused){audio.play();playBtn.textContent='❚❚';}
+    else{audio.pause();playBtn.textContent='▶';}
+  });
+  audio.addEventListener('loadedmetadata',()=>{duration.textContent=format(audio.duration);});
+  audio.addEventListener('timeupdate',()=>{
+    progress.style.width=(audio.currentTime/audio.duration)*100+'%';
+    current.textContent=format(audio.currentTime);
+  });
+  document.querySelector('.music-progress-wrap').addEventListener('click',e=>{
+    const rect=e.currentTarget.getBoundingClientRect();
+    audio.currentTime=((e.clientX-rect.left)/rect.width)*audio.duration;
+  });
+})();
+
+/* INVITE BUTTON */
+(function(){
+  const btn=document.getElementById('inviteBtn');
+  btn.addEventListener('click',()=>{
+    navigator.clipboard.writeText('https://www.chess.com/club/the-cats-gambit/join');
+    btn.textContent='✓ Copied!';
+    setTimeout(()=>{btn.textContent='🐾 Copy invite link';},1600);
+  });
+})();
+
+/* OWNER AVATAR */
+(async function(){
+  try{
+    const res=await fetch('https://api.chess.com/pub/player/afm_plays_chess');
+    const data=await res.json();
+    document.getElementById('ownerAvatar').src=data.avatar||'https://images.chesscomfiles.com/uploads/v1/user/default.40d04d6d.200x200o.a1d7852c4b.jpg';
+  }catch(err){console.log('Avatar failed to load');}
+})();
+</script>
+</body>
+</html>
